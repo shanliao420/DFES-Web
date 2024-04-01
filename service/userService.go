@@ -51,8 +51,7 @@ func (us *UserService) Login(user *do.UserModel, c *gin.Context) {
 		response.FailWithMessage("用户名或密码不正确", c)
 		return
 	}
-	token := utils.GenerateToken()
-	utils.SetToken(token, &userInDB)
+	token := utils.SetOrGetToken(&userInDB)
 	c.Header("Authorization", "Basic "+token)
 	response.OkWithMessage("登陆成功", c)
 }

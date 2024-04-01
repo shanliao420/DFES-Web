@@ -13,7 +13,6 @@ func main() {
 	db.Init()
 
 	engin.Use(middleware.PrintURI)
-	engin.Use(middleware.TokenCheck)
 
 	engin.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -21,14 +20,18 @@ func main() {
 		})
 	})
 
-	anyGroup := engin.Group("/api")
-	anyGroup.GET("/health", func(c *gin.Context) {
+	rootGroup := engin.Group("/api")
+	rootGroup.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "true",
 		})
 	})
 
-	router.UserRouterInstance.InitUserRouter(anyGroup)
+	router.UserRouterInstance.InitUserRouter(rootGroup)
+
+	privateGroup := rootGroup.Group("/private")
+	privateGroup.Use(middleware.TokenCheck)
+	router.UserRouterInstance.InitPrivateRouter(privateGroup)
 
 	err := engin.Run()
 	if err != nil {

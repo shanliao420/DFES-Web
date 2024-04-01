@@ -1,6 +1,8 @@
 package api
 
 import (
+	"DFES-Web/middleware"
+	"DFES-Web/model/do"
 	"DFES-Web/model/request"
 	"DFES-Web/model/response"
 	"DFES-Web/model/trans"
@@ -37,6 +39,15 @@ func (ua *UserApi) Register(c *gin.Context) {
 	user := trans.RegisterInfo2UserModel(&registerInfo)
 	service.UserServiceInstance.Register(user, c)
 	//log.Println("registry user[", registerInfo.Username, "] successful.")
+}
+
+func (ua *UserApi) GetUserInfo(c *gin.Context) {
+	o, ok := c.Get(middleware.UserInfoCacheKey)
+	if !ok {
+		return
+	}
+	user := o.(*do.UserModel)
+	response.OkWithDetailed(user, "获取成功", c)
 }
 
 var UserApiInstance = new(UserApi)
