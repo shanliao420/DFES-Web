@@ -27,12 +27,13 @@ func (us *UserService) Register(user *do.UserModel, c *gin.Context) {
 		return
 	}
 	user.Password = utils.BcryptHash(user.Password)
-	err := db.GlobalMySQLClient.Save(user).Error
+	err := db.GlobalMySQLClient.Create(user).Error
 	if err != nil {
 		log.Println("register err occur in db insert:", err)
 		response.FailWithMessage("注册失败，请稍后重试", c)
 		return
 	}
+	FileSystemServiceInstance.InitUserRootNode(user)
 	response.OkWithMessage("注册成功😊", c)
 }
 

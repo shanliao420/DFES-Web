@@ -8,6 +8,8 @@ create table r_user_file_root
     update_at    timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
     delete_at    timestamp                           null,
     constraint r_user_file_root_nk_user_id
+        unique (user_id),
+    constraint r_user_file_root_uindex_user_id
         unique (user_id)
 )
     comment 'map user with file root id';
