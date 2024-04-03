@@ -10,13 +10,14 @@ import (
 type FileSystemService struct {
 }
 
-func (fss *FileSystemService) InitUserRootNode(user *do.UserModel) {
+func (fss *FileSystemService) InitUserRootNode(user *do.UserModel) error {
 	err := db.GlobalMySQLClient.Transaction(func(tx *gorm.DB) error {
 		rootNode := &do.FileNode{
 			Name:   user.Username + "-space",
 			Parent: uint64(0),
 		}
 		if err := tx.Create(rootNode).Error; err != nil {
+			tx.Rollback()
 			return err
 		}
 		userRootMap := &do.UserTreeRoot{
@@ -24,14 +25,16 @@ func (fss *FileSystemService) InitUserRootNode(user *do.UserModel) {
 			TreeRootId: rootNode.ID,
 		}
 		if err := tx.Create(userRootMap).Error; err != nil {
+			tx.Rollback()
 			return err
 		}
 		return nil
 	})
 	if err != nil {
 		log.Println("init user space err:", err)
-		return
+		return err
 	}
+	return nil
 }
 
 var FileSystemServiceInstance = new(FileSystemService)
