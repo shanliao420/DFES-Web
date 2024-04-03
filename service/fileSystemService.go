@@ -16,13 +16,16 @@ func (fss *FileSystemService) InitUserRootNode(user *do.UserModel) {
 			Name:   user.Username + "-space",
 			Parent: uint64(0),
 		}
-		tx.Create(rootNode)
+		if err := tx.Create(rootNode).Error; err != nil {
+			return err
+		}
 		userRootMap := &do.UserTreeRoot{
 			UserId:     user.ID,
 			TreeRootId: rootNode.ID,
 		}
-		tx.Create(userRootMap)
-		tx.Commit()
+		if err := tx.Create(userRootMap).Error; err != nil {
+			return err
+		}
 		return nil
 	})
 	if err != nil {
