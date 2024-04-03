@@ -13,7 +13,7 @@ func (ur *UserRouter) InitUserRouter(router *gin.RouterGroup) {
 	router.POST("/register", api.UserApiInstance.Register)
 }
 
-func (ur UserRouter) InitPrivateRouter(router *gin.RouterGroup) {
+func (ur *UserRouter) InitPrivateRouter(router *gin.RouterGroup) {
 	router.GET("/userInfo", api.UserApiInstance.GetUserInfo)
 }
 
