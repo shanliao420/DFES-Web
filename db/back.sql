@@ -1,3 +1,17 @@
+create table r_user_file_root
+(
+    id           bigint unsigned auto_increment
+        primary key,
+    user_id      bigint unsigned                     not null,
+    tree_root_id bigint unsigned                     not null,
+    create_at    timestamp default CURRENT_TIMESTAMP null,
+    update_at    timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    delete_at    timestamp                           null,
+    constraint r_user_file_root_nk_user_id
+        unique (user_id)
+)
+    comment 'map user with file root id';
+
 create table t_file_tree
 (
     id        bigint unsigned auto_increment
