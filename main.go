@@ -32,6 +32,7 @@ func main() {
 	privateGroup := rootGroup.Group("/private")
 	privateGroup.Use(middleware.TokenCheck)
 	router.UserRouterInstance.InitPrivateRouter(privateGroup)
+	router.FileSystemRouterInstance.InitFileSystemRouter(privateGroup)
 
 	err := engin.Run()
 	if err != nil {

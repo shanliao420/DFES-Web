@@ -37,4 +37,22 @@ func (fss *FileSystemService) InitUserRootNode(user *do.UserModel) error {
 	return nil
 }
 
+func (fss *FileSystemService) CreateNode(newNode *do.FileNode) error {
+	return db.GlobalMySQLClient.Create(newNode).Error
+}
+
+func (fss *FileSystemService) DeleteNode(id uint64) error {
+	return db.GlobalMySQLClient.Delete(&do.FileNode{}, id).Error
+}
+
+func (fss *FileSystemService) ModifyNode(node *do.FileNode) error {
+	return db.GlobalMySQLClient.Updates(node).Error
+}
+
+func (fss *FileSystemService) Exists(id uint64) bool {
+	var cnt int64
+	db.GlobalMySQLClient.First(&do.FileNode{}, id).Count(&cnt)
+	return cnt == 1
+}
+
 var FileSystemServiceInstance = new(FileSystemService)

@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/go-redis/redis"
+	"github.com/shanliao420/DFES-Go-Client/client"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -10,6 +11,7 @@ import (
 var (
 	GlobalMySQLClient *gorm.DB
 	GlobalRedisClient *redis.Client
+	GlobalDFESClient  *client.DFESClient
 )
 
 func Init() {
@@ -27,4 +29,7 @@ func Init() {
 	})
 	log.Println("redis init successful.")
 	GlobalRedisClient = cache
+
+	DFESClient := client.NewDFESClient(":6000")
+	GlobalDFESClient = DFESClient
 }
