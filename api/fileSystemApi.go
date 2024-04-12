@@ -1,11 +1,14 @@
 package api
 
 import (
+	"DFES-Web/db"
 	"DFES-Web/model/do"
 	"DFES-Web/model/request"
 	"DFES-Web/model/response"
 	"DFES-Web/service"
+	"context"
 	"github.com/gin-gonic/gin"
+	"io"
 	"log"
 	"strconv"
 )
@@ -113,11 +116,42 @@ func (fsa *FileSystemApi) UploadFile(c *gin.Context) {
 	response.OkWithMessage("上传成功", c)
 }
 
+func (fsa *FileSystemApi) DownloadFile(c *gin.Context) {
+	id, err := string2uint64(c.Query("id"))
+	if err != nil {
+		log.Println("get id err:", err)
+		response.FailWithMessage("参数错误", c)
+		return
+	}
+	node := service.FileSystemServiceInstance.GetNode(id)
+	reader, err := db.GlobalDFESClient.GetStream(context.Background(), node.DataId)
+	if err != nil {
+		log.Println("get file stream err:", err)
+		response.FailWithMessage("请稍后重试", c)
+		return
+	}
+
+	c.Header("Content-Disposition", "attachment; filename="+node.Name)
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Transfer-Encoding", "binary")
+	_, err = io.Copy(c.Writer, reader)
+	if err != nil {
+		log.Println("copy err:", err)
+		response.FailWithMessage("请稍后重试", c)
+		return
+	}
+	c.Writer.Flush()
+}
+
 func CheckKind(kind byte) bool {
 	if kind == do.FileKind || kind == do.DirectoryKind {
 		return true
 	}
 	return false
+}
+
+func string2uint64(num string) (uint64, error) {
+	return strconv.ParseUint(num, 10, 64)
 }
 
 var FileSystemApiInstance = new(FileSystemApi)

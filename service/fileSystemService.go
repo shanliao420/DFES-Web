@@ -39,6 +39,12 @@ func (fss *FileSystemService) InitUserRootNode(user *do.UserModel) error {
 	return nil
 }
 
+func (fss *FileSystemService) GetNode(id uint64) *do.FileNode {
+	var node do.FileNode
+	db.GlobalMySQLClient.First(&node, id)
+	return &node
+}
+
 func (fss *FileSystemService) CreateNode(newNode *do.FileNode) error {
 	return db.GlobalMySQLClient.Create(newNode).Error
 }
