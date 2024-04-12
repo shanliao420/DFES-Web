@@ -59,7 +59,7 @@ func (fss *FileSystemService) Exists(id uint64) bool {
 
 func (fss *FileSystemService) ExistsInDirectory(parent uint64, filename string) bool {
 	var cnt int64
-	db.GlobalMySQLClient.Model(&do.FileNode{}).Where("parent_id = ? and name = ?", parent, filename).Count(&cnt)
+	db.GlobalMySQLClient.Model(&do.FileNode{}).Where("parent = ? and name = ?", parent, filename).Count(&cnt)
 	return cnt == 1
 }
 

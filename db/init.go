@@ -30,6 +30,7 @@ func Init() {
 	log.Println("redis init successful.")
 	GlobalRedisClient = cache
 
-	DFESClient := client.NewDFESClient(":6000")
+	DFESClient := client.NewDFESClient(":6001")
 	GlobalDFESClient = DFESClient
+	log.Println("dfes init successful.")
 }

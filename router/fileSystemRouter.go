@@ -10,6 +10,7 @@ type FileSystemRouter struct {
 
 func (fsr *FileSystemRouter) InitFileSystemRouter(router *gin.RouterGroup) {
 	router.POST("/operator", api.FileSystemApiInstance.OperateFileSystem)
+	router.POST("/upload", api.FileSystemApiInstance.UploadFile)
 }
 
 var FileSystemRouterInstance = new(FileSystemRouter)
