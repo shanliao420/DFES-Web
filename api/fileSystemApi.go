@@ -7,6 +7,11 @@ import (
 	"DFES-Web/service"
 	"github.com/gin-gonic/gin"
 	"log"
+	"strconv"
+)
+
+const (
+	DefaultMaxSingleFile = 100 * 1024 * 1024 // 上传的文件超过100M使用流式传输
 )
 
 type FileSystemApi struct {
@@ -68,40 +73,44 @@ func (fsa *FileSystemApi) OperateFileSystem(c *gin.Context) {
 }
 
 func (fsa *FileSystemApi) UploadFile(c *gin.Context) {
-	//fileHeader, err := c.FormFile("file")
-	//if err != nil {
-	//	log.Println("get file header from request err:", err)
-	//	response.FailWithMessage("请重试", c)
-	//	return
-	//}
-	//file, err := fileHeader.Open()
-	//if err != nil {
-	//	log.Println("open file header err:", err)
-	//	response.FailWithMessage("请重试", c)
-	//	return
-	//}
-	//var dataId string
-	//if fileHeader.Size > 1024*1024*1024 {
-	//	dataId, err = db.GlobalDFESClient.PushStream(context.Background(), file)
-	//	if err != nil {
-	//		log.Println("上传失败，请重试", c)
-	//		return
-	//	}
-	//} else {
-	//	b, err := io.ReadAll(file)
-	//	if err != nil {
-	//		log.Println("read bytes err:", err)
-	//		response.FailWithMessage("请重试", c)
-	//		return
-	//	}
-	//	dataId, err = db.GlobalDFESClient.Push(context.Background(), b)
-	//	if err != nil {
-	//		log.Println("上传失败，请重试", c)
-	//		return
-	//	}
-	//}
-	//parentId := c.PostForm("parent")
-
+	fileHeader, err := c.FormFile("file")
+	if err != nil {
+		log.Println("get file header from request err:", err)
+		response.FailWithMessage("请重试", c)
+		return
+	}
+	file, err := fileHeader.Open()
+	if err != nil {
+		log.Println("open file header err:", err)
+		response.FailWithMessage("请重试", c)
+		return
+	}
+	name := c.PostForm("name")
+	parent, err := strconv.ParseUint(c.PostForm("parent"), 10, 64)
+	if err != nil {
+		log.Println("parse parent err:", err)
+		response.FailWithMessage("参数错误", c)
+		return
+	}
+	if !service.FileSystemServiceInstance.Exists(parent) {
+		response.FailWithMessage("新增节点所选父节点不存在", c)
+		return
+	}
+	if service.FileSystemServiceInstance.ExistsInDirectory(parent, name) {
+		response.FailWithMessage("所选目录存在同名文件", c)
+		return
+	}
+	node := &do.FileNode{
+		Name:   name,
+		Parent: parent,
+		Kind:   do.FileKind,
+	}
+	err = service.FileSystemServiceInstance.Upload(node, file, fileHeader.Size > DefaultMaxSingleFile)
+	if err != nil {
+		response.FailWithMessage("请稍后重试", c)
+		return
+	}
+	response.OkWithMessage("上传成功", c)
 }
 
 func CheckKind(kind byte) bool {

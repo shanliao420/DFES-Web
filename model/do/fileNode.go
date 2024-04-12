@@ -7,7 +7,7 @@ const (
 
 type FileNode struct {
 	Name     string `json:"name"`
-	DataId   uint64 `json:"dataId" gorm:"default null"`
+	DataId   string `json:"dataId" gorm:"default null"`
 	Parent   uint64 `json:"parent" gorm:"comment: 0 root else other"`
 	Kind     byte   `json:"kind" gorm:"default 1;comment: 0 file 1 directory"`
 	ShareUrl string `json:"shareUrl" gorm:"default null"`
