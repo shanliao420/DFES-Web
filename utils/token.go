@@ -29,26 +29,26 @@ func GenerateToken() string {
 }
 
 func SetOrGetToken(user *do.UserModel) string {
-	tokenUserKey := UserTokenPrefix + strconv.FormatUint(user.ID, 10)
-	ret := db.GlobalRedisClient.Exists(tokenUserKey)
+	userTokenKey := UserTokenPrefix + strconv.FormatUint(user.ID, 10)
+	ret := db.GlobalRedisClient.Exists(userTokenKey)
 	if ret.Val() != 0 {
-		tokenVal := db.GlobalRedisClient.Get(tokenUserKey)
+		tokenVal := db.GlobalRedisClient.Get(userTokenKey)
 		var tokenModel TokenModel
 		_ = jsoniter.UnmarshalFromString(tokenVal.Val(), &tokenModel)
-		userTokenKey := TokenUserPrefix + tokenModel.Token
-		db.GlobalRedisClient.Expire(tokenUserKey, DefaultExpireTime)
+		tokenUserKey := TokenUserPrefix + tokenModel.Token
 		db.GlobalRedisClient.Expire(userTokenKey, DefaultExpireTime)
+		db.GlobalRedisClient.Expire(tokenUserKey, DefaultExpireTime)
 		return tokenModel.Token
 	}
 	token := GenerateToken()
-	userTokenKey := TokenUserPrefix + token
+	tokenUserKey := TokenUserPrefix + token
 	tokenModel := &TokenModel{
 		Token:     token,
 		UserModel: *user,
 	}
 	json, _ := jsoniter.MarshalToString(tokenModel)
-	db.GlobalRedisClient.Set(tokenUserKey, json, DefaultExpireTime)
-	db.GlobalRedisClient.Set(userTokenKey, token, DefaultExpireTime)
+	db.GlobalRedisClient.Set(tokenUserKey, strconv.FormatUint(user.ID, 10), DefaultExpireTime)
+	db.GlobalRedisClient.Set(userTokenKey, json, DefaultExpireTime)
 	return token
 }
 
@@ -57,7 +57,7 @@ func GetToken(token string) *do.UserModel {
 	if ret.Err() != nil || ret.Val() == "" {
 		return nil
 	}
-	tRet := db.GlobalRedisClient.Get(TokenUserPrefix + ret.Val())
+	tRet := db.GlobalRedisClient.Get(UserTokenPrefix + ret.Val())
 	var tokenModel TokenModel
 	_ = jsoniter.UnmarshalFromString(tRet.Val(), &tokenModel)
 	return &(tokenModel.UserModel)

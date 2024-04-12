@@ -2,6 +2,7 @@ package api
 
 import (
 	"DFES-Web/db"
+	"DFES-Web/middleware"
 	"DFES-Web/model/do"
 	"DFES-Web/model/request"
 	"DFES-Web/model/response"
@@ -143,6 +144,13 @@ func (fsa *FileSystemApi) DownloadFile(c *gin.Context) {
 		return
 	}
 	c.Writer.Flush()
+}
+
+func (fsa *FileSystemApi) GetTree(c *gin.Context) {
+	o, _ := c.Get(middleware.UserInfoCacheKey)
+	userInfo := o.(*do.UserModel)
+	tree := service.FileSystemServiceInstance.GetTree(userInfo.ID)
+	response.OkWithData(tree, c)
 }
 
 func CheckKind(kind byte) bool {

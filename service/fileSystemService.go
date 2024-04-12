@@ -3,6 +3,7 @@ package service
 import (
 	"DFES-Web/db"
 	"DFES-Web/model/do"
+	"DFES-Web/model/response"
 	"context"
 	"gorm.io/gorm"
 	"io"
@@ -89,6 +90,35 @@ func (fss *FileSystemService) Upload(node *do.FileNode, reader io.Reader, stream
 	node.DataId = dataId
 	db.GlobalMySQLClient.Create(node)
 	return nil
+}
+
+func (fss *FileSystemService) GetTree(userId uint64) *response.TreeResponse {
+	var userRoot do.UserTreeRoot
+	db.GlobalMySQLClient.Where("user_id = ?", userId).First(&userRoot)
+	var root do.FileNode
+	db.GlobalMySQLClient.First(&root, userRoot.TreeRootId)
+	result := &response.TreeResponse{
+		FileNode: root,
+		Children: getChildren(root.ID),
+	}
+	return result
+}
+
+func getChildren(parent uint64) *[]response.TreeResponse {
+	var children []do.FileNode
+	db.GlobalMySQLClient.Where("parent = ?", parent).Find(&children)
+	if len(children) == 0 {
+		return nil
+	}
+	var result []response.TreeResponse
+	for _, child := range children {
+		cur := &response.TreeResponse{
+			FileNode: child,
+			Children: getChildren(child.ID),
+		}
+		result = append(result, *cur)
+	}
+	return &result
 }
 
 var FileSystemServiceInstance = new(FileSystemService)
