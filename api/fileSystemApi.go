@@ -104,9 +104,10 @@ func (fsa *FileSystemApi) UploadFile(c *gin.Context) {
 		return
 	}
 	node := &do.FileNode{
-		Name:   name,
-		Parent: parent,
-		Kind:   do.FileKind,
+		Name:     name,
+		Parent:   parent,
+		Kind:     do.FileKind,
+		FileSize: uint64(fileHeader.Size),
 	}
 	err = service.FileSystemServiceInstance.Upload(node, file, fileHeader.Size > DefaultMaxSingleFile)
 	if err != nil {
@@ -134,6 +135,7 @@ func (fsa *FileSystemApi) DownloadFile(c *gin.Context) {
 	c.Header("Content-Disposition", "attachment; filename="+node.Name)
 	c.Header("Content-Type", "application/octet-stream")
 	c.Header("Content-Transfer-Encoding", "binary")
+	c.Header("Content-Length", strconv.FormatUint(node.FileSize, 10))
 	_, err = io.Copy(c.Writer, reader)
 	if err != nil {
 		log.Println("copy err:", err)
