@@ -34,7 +34,7 @@ func main() {
 	router.UserRouterInstance.InitPrivateRouter(privateGroup)
 	router.FileSystemRouterInstance.InitFileSystemRouter(privateGroup)
 
-	err := engin.Run()
+	err := engin.Run(":9080")
 	if err != nil {
 		log.Fatalln(err)
 		return
