@@ -13,6 +13,7 @@ func main() {
 	db.Init()
 
 	engin.Use(middleware.PrintURI)
+	engin.Use(middleware.Cors)
 
 	engin.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
