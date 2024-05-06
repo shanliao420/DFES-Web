@@ -110,8 +110,7 @@ func (fsa *FileSystemApi) UploadFile(c *gin.Context) {
 		Kind:     do.FileKind,
 		FileSize: uint64(fileHeader.Size),
 	}
-	//err = service.FileSystemServiceInstance.Upload(node, file, fileHeader.Size > DefaultMaxSingleFile)
-	err = service.FileSystemServiceInstance.Upload(node, file, true)
+	err = service.FileSystemServiceInstance.Upload(node, file, fileHeader.Size > DefaultMaxSingleFile)
 	if err != nil {
 		response.FailWithMessage("请稍后重试", c)
 		return
