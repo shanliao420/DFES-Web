@@ -11,7 +11,7 @@ type FileSystemOperateInfo struct {
 	Name         string
 	Parent       uint64
 	Kind         byte
-	OperatorCode int8
+	OperatorCode int8 `json:"operator_code"`
 }
 
 type UploadFileInfo struct {
