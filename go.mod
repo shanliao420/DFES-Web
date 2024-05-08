@@ -7,7 +7,7 @@ require (
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/google/uuid v1.6.0
 	github.com/json-iterator/go v1.1.12
-	github.com/shanliao420/DFES-Go-Client v1.0.0
+	github.com/shanliao420/DFES-Go-Client v1.0.1
 	golang.org/x/crypto v0.21.0
 	gorm.io/driver/mysql v1.5.6
 	gorm.io/gorm v1.25.8

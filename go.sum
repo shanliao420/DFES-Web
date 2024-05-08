@@ -176,8 +176,8 @@ github.com/prometheus/procfs v0.0.2/go.mod h1:TjEm7ze935MbeOT/UhFTIMYKhuLP4wbCsT
 github.com/prometheus/procfs v0.0.8/go.mod h1:7Qr8sr6344vo1JqZ6HhLceV9o3AJ1Ff+GxbHq6oeK9A=
 github.com/shanliao420/DFES v1.0.6 h1:wfw10HGdCtB/q1uV7hWOH40vn9werdQIcIsBWmrMTiI=
 github.com/shanliao420/DFES v1.0.6/go.mod h1:LlaZ8YGIvTF+aS22sZPxna5gnO1JWbqtrZFilqI6288=
-github.com/shanliao420/DFES-Go-Client v1.0.0 h1:3AyjgXMCBuBQm7HK8UcStfv1+b5XwuTgugUA6eYNEEM=
-github.com/shanliao420/DFES-Go-Client v1.0.0/go.mod h1:rJgeATMzcN2NNd1TNpUAlDurJFfRBlEWxHGI32qoR1s=
+github.com/shanliao420/DFES-Go-Client v1.0.1 h1:2FvmJ2ISQsx55A7SGjmS12BJ1jzuOwRuZ4Q+kCc8E00=
+github.com/shanliao420/DFES-Go-Client v1.0.1/go.mod h1:rJgeATMzcN2NNd1TNpUAlDurJFfRBlEWxHGI32qoR1s=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/sirupsen/logrus v1.4.2/go.mod h1:tLMulIdttU9McNUspp0xgXVQah82FyeX6MwdIuYE2rE=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
