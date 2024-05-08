@@ -58,6 +58,8 @@ func GetToken(token string) *do.UserModel {
 		return nil
 	}
 	tRet := db.GlobalRedisClient.Get(UserTokenPrefix + ret.Val())
+	db.GlobalRedisClient.Expire(TokenUserPrefix+token, DefaultExpireTime)
+	db.GlobalRedisClient.Expire(UserTokenPrefix+ret.Val(), DefaultExpireTime)
 	var tokenModel TokenModel
 	_ = jsoniter.UnmarshalFromString(tRet.Val(), &tokenModel)
 	return &(tokenModel.UserModel)
