@@ -174,10 +174,10 @@ github.com/prometheus/common v0.9.1/go.mod h1:yhUN8i9wzaXS3w1O07YhxHEBxD+W35wd8b
 github.com/prometheus/procfs v0.0.0-20181005140218-185b4288413d/go.mod h1:c3At6R/oaqEKCNdg8wHV1ftS6bRYblBhIjjI8uT2IGk=
 github.com/prometheus/procfs v0.0.2/go.mod h1:TjEm7ze935MbeOT/UhFTIMYKhuLP4wbCsTZCD3I8kEA=
 github.com/prometheus/procfs v0.0.8/go.mod h1:7Qr8sr6344vo1JqZ6HhLceV9o3AJ1Ff+GxbHq6oeK9A=
-github.com/shanliao420/DFES v1.0.6 h1:wfw10HGdCtB/q1uV7hWOH40vn9werdQIcIsBWmrMTiI=
-github.com/shanliao420/DFES v1.0.6/go.mod h1:LlaZ8YGIvTF+aS22sZPxna5gnO1JWbqtrZFilqI6288=
-github.com/shanliao420/DFES-Go-Client v1.0.1 h1:2FvmJ2ISQsx55A7SGjmS12BJ1jzuOwRuZ4Q+kCc8E00=
-github.com/shanliao420/DFES-Go-Client v1.0.1/go.mod h1:rJgeATMzcN2NNd1TNpUAlDurJFfRBlEWxHGI32qoR1s=
+github.com/shanliao420/DFES v1.0.7 h1:NhDonTbnrfE/ssXHrfozQrDF1yodiJn6JYfdCP22D6Q=
+github.com/shanliao420/DFES v1.0.7/go.mod h1:oUrQhCi862o9HG13fBTyOahFjRMKltjbuVB+mSHLJoU=
+github.com/shanliao420/DFES-Go-Client v1.0.2 h1:F7BGO6k/HqY85PvJ21Enj4T00Z0RzcqzhwPZOivIXvM=
+github.com/shanliao420/DFES-Go-Client v1.0.2/go.mod h1:wWpcY4iSvR8WxaR+t2IiVQqcniOt5G9BNhv4E/j8x2U=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/sirupsen/logrus v1.4.2/go.mod h1:tLMulIdttU9McNUspp0xgXVQah82FyeX6MwdIuYE2rE=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
